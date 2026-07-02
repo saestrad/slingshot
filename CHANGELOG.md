@@ -1,0 +1,39 @@
+# Changelog
+
+## 2.1.0 — 2026-07-02
+
+- Nuevo comando `arsenal` + `references/arsenal.md`: catálogo verificado de
+  herramientas externas de ahorro de tokens (RTK, Token Savior,
+  code-review-graph, Context Mode, claude-context, etc.) con veredictos
+  honestos, licencias y protocolo de recomendación (máx. 2 por usuario).
+- 3 entradas nuevas en el seed del ledger genérico: variantes terse de CLI,
+  auditoría de MCP servers instalados (tool definitions = costo fijo por
+  request), split de CLAUDE.md gordo en core + docs bajo demanda.
+
+## 2.0.0 — 2026-07-02
+
+Arquitectura Impeccable-style.
+
+- **Capa siempre activa**: bloque administrado inyectado en `CLAUDE.md`/`AGENTS.md`
+  entre marcadores `SLINGSHOT:BEGIN/END` (reglas de economía + auto-triggers).
+- **8 comandos** `/slingshot <cmd>`: distill, route, budget, learn, recall,
+  teach, status, install/update/uninstall.
+- **Instalador** `scripts/slingshot.mjs` (Node, cero dependencias):
+  scopes global/proyecto, inyección idempotente por marcadores, backup de
+  settings, `--hook` opcional.
+- **Hook SessionStart** `scripts/session-start.mjs`: inyecta ambos ledgers
+  como `additionalContext` en cada sesión.
+- **Separación código/datos**: el ledger genérico se muda de la carpeta de la
+  skill a `~/.claude/slingshot/generic.md`; `update` reemplaza código
+  wholesale sin tocar ledgers. La skill ahora incluye `learnings/seed.md`
+  (siembra solo en primera instalación).
+- Nuevos references: `recall.md` (consumo de ledgers), `teach.md` (siembra
+  deliberada del ledger de proyecto), `manage.md` (ciclo de vida).
+- Renombrados: `routing.md`→`route.md`, `context-budget.md`→`budget.md`,
+  `learning.md`→`learn.md` (paridad nombre-comando).
+- Frontmatter: `version`, `user-invocable`, `argument-hint`, `allowed-tools`.
+
+## 1.0.0 — 2026-07-02
+
+Versión inicial: SKILL.md router con 4 movimientos (DISTILL, ROUTE, BUDGET,
+LEARN), 4 references, ledger genérico dentro de la skill.
