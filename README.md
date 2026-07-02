@@ -80,6 +80,18 @@ npx @saestrad/slingshot install --hook
 npx @saestrad/slingshot@latest update
 ```
 
+**Vía plugin de Claude Code (integración nativa):**
+
+```
+/plugin marketplace add saestrad/slingshot
+/plugin install slingshot@saestrad
+```
+
+Instala la skill como plugin versionado (namespaced `/slingshot:slingshot`).
+Nota: el plugin entrega la **capa profunda** (la skill); para la **capa
+siempre-activa** (regla de economía en `CLAUDE.md` + hook de ledgers) usa el
+instalador de npm o git de abajo, que es quien escribe esos archivos.
+
 **Vía git (si prefieres el checkout):**
 
 ```bash

@@ -1,0 +1,23 @@
+{
+  "name": "saestrad",
+  "owner": {
+    "name": "saestrad",
+    "url": "https://github.com/saestrad"
+  },
+  "metadata": {
+    "description": "Skills by saestrad."
+  },
+  "plugins": [
+    {
+      "name": "slingshot",
+      "source": "./slingshot",
+      "description": "Token, context, and model-cost optimizer for Claude Code with an always-on economy layer and a persistent learning loop.",
+      "version": "2.4.0",
+      "author": {
+        "name": "saestrad"
+      },
+      "homepage": "https://github.com/saestrad/slingshot",
+      "license": "MIT"
+    }
+  ]
+}
