@@ -43,14 +43,31 @@ Every always-loaded file (CLAUDE.md, skill descriptions, ledgers) is a tax on
 
 ## Cache awareness
 
-Anthropic's prompt cache rewards **stable prefixes**: system prompt, skill
-files, and early conversation are cached; edits and churn at the top
-invalidate it. Practical consequences:
+Anthropic's prompt cache is a **prefix match** (verified against the API
+docs, 2026-07): the rendered prompt caches in order tools → system →
+messages, and a single byte changed anywhere invalidates everything after
+it. The economics are steep — cache reads cost **~0.1x** the input price
+(10x cheaper), writes 1.25x — so a stable prefix is the single largest
+passive saving available.
 
-- Don't repeatedly edit files that load at session start (CLAUDE.md,
-  ledgers) mid-session — batch those updates at the end.
+Practical consequences:
+
+- Don't repeatedly edit files that load at session start (CLAUDE.md, skills,
+  ledgers) mid-session — every edit invalidates the cached prefix for the
+  rest of the session. Batch those updates at task end.
+- Silent invalidators to hunt when cache hits mysteriously drop: timestamps
+  or random IDs early in a prompt, unsorted JSON serialization, tool sets or
+  models that change between requests.
 - Long-lived, stable Spec Blocks and plan files are cache-friendly;
   regenerating them with small variations is not.
+
+## Measuring
+
+- Count tokens with the `count_tokens` API against the actual model — never
+  `tiktoken` (OpenAI's tokenizer; undercounts Claude by ~15–20%, worse on
+  code).
+- Non-urgent bulk work belongs on the **Batches API at 50% of standard
+  price**; the only cost is latency.
 
 ## Output discipline
 

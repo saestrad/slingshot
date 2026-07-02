@@ -14,6 +14,21 @@ tier.
 | **Sonnet** | Solid implementation, tests, refactors, summaries, focused research | A full Spec Block, exact file paths, the project's conventions stated (not assumed), DONE WHEN it can self-check |
 | **Opus / Fable** | Ambiguity, architecture, cross-cutting design, unknown-cause debugging, judgment | The hard 20%: distillation, decomposition, verification, and anything where being wrong is expensive |
 
+The arbitrage is measurable. Anthropic list prices per MTok (input/output,
+verified 2026-07): Haiku 4.5 **$1/$5** → Sonnet 5 **$3/$15** → Opus 4.8
+**$5/$25** → Fable 5 **$10/$50**. A Haiku-executed subtask costs 5–10x less
+than the same tokens one or three tiers up — the spec that makes it possible
+costs a few hundred strong-model tokens once.
+
+Two API-level levers that stack with tier choice:
+
+- **`output_config.effort`** (`low`→`max`): lower effort means fewer, more
+  consolidated tool calls, less preamble, terser output. `high` is the sweet
+  spot; `xhigh` for the hardest agentic work; `low` for delegated subagents
+  doing mechanical work.
+- **Batches API**: non-urgent bulk work runs at **50% of standard price** —
+  latency (up to hours) is the only trade. If nobody is waiting on it, batch it.
+
 ## The compound pattern
 
 ```

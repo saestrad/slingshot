@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.2.0 — 2026-07-02
+
+Verificación de fuentes + números duros del API oficial de Anthropic.
+
+- Las 10 herramientas del arsenal verificadas contra la API de GitHub
+  (existencia, estrellas, actividad, licencia); licencias ELv2/PolyForm
+  confirmadas.
+- `route.md`: tabla de precios real por MTok (Haiku $1/$5 → Fable $10/$50),
+  palancas `output_config.effort` y Batches API (50% dcto).
+- `budget.md`: mecánica exacta del prompt cache (prefix match, lecturas
+  ~0.1x, escrituras 1.25x, invalidadores silenciosos), `count_tokens` vs
+  tiktoken.
+- 6 entradas nuevas en el seed del ledger genérico (27 total).
+
 ## 2.1.0 — 2026-07-02
 
 - Nuevo comando `arsenal` + `references/arsenal.md`: catálogo verificado de

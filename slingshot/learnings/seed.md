@@ -24,3 +24,8 @@ before exceeding. Format: `- [tag] fact — when/why it applies`.
 - [output] Prefer terse command variants (git status --short, --quiet flags, tail on logs) — most CLI verbosity never informs the next step.
 - [budget] Every installed MCP server ships its tool definitions in every request — audit /context and remove unused servers before optimizing anything else.
 - [budget] Split a fat CLAUDE.md into a lean always-loaded core plus on-demand docs — reported startup context drops of ~80-90% (11K→800 tokens).
+- [cache] Cache reads cost ~0.1x input price (writes 1.25x); the cache is a prefix match — one byte changed early invalidates everything after it.
+- [model] Price ladder per MTok (2026-07): Haiku $1/$5, Sonnet $3/$15, Opus $5/$25, Fable $10/$50 — a delegated subtask costs 5-10x less down-tier.
+- [model] output_config.effort is a per-request lever — lower effort means fewer, consolidated tool calls and terser output; low fits mechanical subagents.
+- [budget] Non-urgent bulk work through the Batches API costs 50% of standard price — latency (up to hours) is the only trade.
+- [verify] Count Claude tokens with the count_tokens API, never tiktoken — OpenAI's tokenizer undercounts Claude by ~15-20%, worse on code.
