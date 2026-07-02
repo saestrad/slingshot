@@ -1,7 +1,7 @@
 {
   "name": "@saestrad/slingshot",
   "version": "2.4.0",
-  "description": "Token, context, and model-cost optimizer for Claude Code and AGENTS.md-compatible agents — an always-on economy layer plus a persistent learning loop.",
+  "description": "Makes Claude Code do more with fewer tokens: it sharpens vague requests into precise specs, runs each task on the cheapest capable model, and learns what works across sessions. Runs automatically once installed.",
   "type": "module",
   "bin": {
     "slingshot": "slingshot/scripts/slingshot.mjs"

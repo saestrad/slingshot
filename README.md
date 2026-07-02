@@ -1,81 +1,103 @@
 # Slingshot 🎯
 
-> Fire a slingshot; make the result an intergalactic explosion.
+> Fire a slingshot; get an intergalactic explosion.
 
-A token, context, and model-cost optimizer for Claude Code and any agent that
-reads `AGENTS.md`, with a persistent learning loop and an **always-on** layer
-installed as a rule in the agent's root file.
+**Slingshot makes Claude Code do more with fewer tokens — automatically.**
+It sharpens vague requests into precise instructions, runs each task on the
+cheapest model that can actually handle it, and remembers what works across
+sessions. You get top-tier results at a fraction of the cost, without changing
+how you work.
 
-The operating principle: **spend expensive tokens once — on specification,
-routing, and learning — so every future token is cheaper.** One skill, nine
-commands, non-optional gates, a multi-agent installer, and a strict separation
-between code (updatable) and data (your learnings, untouchable).
+Once installed, it runs on its own. There are no commands to memorize and no
+new habits to build: a small set of economy rules rides along in every request,
+and the full playbook loads only when a task actually needs it.
 
-## The two layers
+## Why it saves money
 
-1. **Always-on** — a managed block the installer injects into `CLAUDE.md`
-   (and `AGENTS.md` if present) between the
-   `<!-- SLINGSHOT:BEGIN -->` / `<!-- SLINGSHOT:END -->` markers. It's ~20
-   lines that ride along in **every request**: economy rules + auto-triggers
-   (distill vague requests, route delegable work, record and consume
-   learnings). This runs no matter what, without invoking anything.
-2. **Deep** — the skill with the full protocols, loaded only when a move or
-   command actually runs (progressive disclosure: the deep layer costs nothing
-   until it's used).
+Most token waste isn't long output — it's **rework** (building the wrong thing)
+and **overkill** (using an expensive model for a simple job). Slingshot attacks
+both:
 
-Optional and stronger still: a `SessionStart` hook that injects your two
-learning ledgers automatically at the start of **every session**
-(`--hook` in the installer).
+- **Sharpen before doing.** A vague request ("make it faster", "clean this up")
+  becomes a precise spec — goal, scope, and a checkable "done when" — *before*
+  any work starts. Less back-and-forth, fewer wrong turns.
+- **Right-size the model.** A well-specified task doesn't need the most
+  expensive model. Slingshot routes each job to the cheapest tier that can do
+  it well — often 5–10× cheaper — and reserves the strong model for the hard
+  20%: judgment, architecture, and reviewing the result.
+- **Learn once, reuse forever.** Every session, it records what worked as
+  one-line lessons and reuses them next time — so it gets cheaper *and* smarter
+  the more you use it.
+
+The core move:
+
+```
+strong model SHARPENS the task → cheap model DOES it → a script or the strong model CHECKS it
+```
+
+Reading and checking a result costs far less than generating it, so the
+expensive model's time goes where it matters.
+
+## How it's built: two layers
+
+1. **Always-on layer** — a small managed block the installer adds to your
+   agent's root file (`CLAUDE.md`, and `AGENTS.md` for other agents). It's ~20
+   lines that travel in **every request**: the economy rules plus the triggers
+   that fire the behavior automatically. Nothing to invoke.
+2. **Deep layer** — the full skill, with the complete playbook for each move.
+   It loads **only when a task needs it**, so it costs nothing the rest of the
+   time.
+
+Optional extra: a `SessionStart` hook that loads your saved lessons at the
+start of every session automatically (`--hook` when installing).
 
 ## Commands
 
-`/slingshot <command> [target]` — or triggered automatically via auto-triggers.
+You rarely need these — the behavior is automatic. But you can invoke any move
+directly with `/slingshot <command>`:
 
 | Command | What it does |
 |---|---|
-| `distill [request]` | Vague intent → executable Spec Block |
-| `route [task]` | Minimal sufficient model + delegation prompt |
-| `budget` | Audit of the session's context economy |
-| `arsenal` | Recommends vetted external token-saving tools (max 2, never installs without confirmation) |
-| `learn` | Extracts session learnings into the ledgers |
-| `recall [topic]` | Consumes the ledgers; surfaces entries by topic |
-| `teach` | Repo scan + 1 interview → seeds the project ledger |
-| `status` | Version, install state, ledger stats |
-| `install` / `update` / `uninstall` | Lifecycle via the script |
+| `distill [request]` | Turns a vague request into a precise, executable spec |
+| `route [task]` | Picks the cheapest model that fits + writes the hand-off prompt |
+| `budget` | Audits the current session for wasted context and fixes it |
+| `arsenal` | Suggests vetted external token-saving tools (max 2, never installs without asking) |
+| `learn` | Saves the session's lessons |
+| `recall [topic]` | Pulls up saved lessons relevant to what you're doing |
+| `teach` | Scans a repo + one quick interview → seeds that project's lessons |
+| `status` | Shows version, install state, and lesson counts |
+| `install` / `update` / `uninstall` | Manage the installation |
 
-The pattern that makes a lower model perform like a higher one:
+## Memory that survives updates
 
-```
-strong model DISTILLS → cheap model EXECUTES → script or strong model VERIFIES
-```
+Slingshot keeps two files of lessons ("ledgers"). Updating the tool **never
+touches them** — your knowledge is safe.
 
-## The ledgers (data — an update never touches them)
-
-| Ledger | Path | Contents |
+| File | Where | What's in it |
 |---|---|---|
-| Generic | `~/.claude/slingshot/generic.md` | Techniques valid in any project (seeded with 35 curated learnings, verified against primary sources) |
-| Project | `.claude/slingshot.md` in each repo | That repo's quirks — commit it and the whole team inherits it |
+| Generic | `~/.claude/slingshot/generic.md` | Techniques that help on any project (ships seeded with 35 curated, source-verified lessons) |
+| Project | `.claude/slingshot.md` in each repo | That repo's specific quirks — commit it and your whole team inherits it |
 
-One line per learning, hard caps (80/60 lines), dedupe, and immediate deletion
-of anything falsified.
+One line per lesson, capped in size, deduplicated, and any lesson proven wrong
+is deleted on sight.
 
 ## Installation
 
 Requires Node 18+.
 
-**Via npm (recommended) — no cloning:**
+**Via npm (recommended) — nothing to clone:**
 
 ```bash
-# Global (all your projects, rule in ~/.claude/CLAUDE.md):
+# Everywhere (adds the rule to ~/.claude/CLAUDE.md):
 npx @saestrad/slingshot install
 
-# Per project:
+# For a single project:
 npx @saestrad/slingshot install --scope=project --project-dir=<path>
 
-# With automatic ledger injection each session:
+# Also load your saved lessons at the start of every session:
 npx @saestrad/slingshot install --hook
 
-# Update to the latest version:
+# Update later:
 npx @saestrad/slingshot@latest update
 ```
 
@@ -86,10 +108,10 @@ npx @saestrad/slingshot@latest update
 /plugin install slingshot@saestrad
 ```
 
-Installs the skill as a versioned plugin (namespaced `/slingshot:slingshot`).
-Note: the plugin delivers the **deep layer** (the skill); for the
-**always-on layer** (economy rule in `CLAUDE.md` + ledger hook) use the npm or
-git installer below, which is what writes those files.
+This installs the skill as a versioned plugin (`/slingshot:slingshot`). Note:
+the plugin gives you the **deep layer** (the skill itself). For the
+**always-on layer** — the economy rule in `CLAUDE.md` and the lesson hook — use
+the npm or git installer below, since that's what writes those files.
 
 **Via git (if you prefer a checkout):**
 
@@ -97,63 +119,60 @@ git installer below, which is what writes those files.
 git clone https://github.com/saestrad/slingshot.git
 cd slingshot
 
-# Global (all your projects, rule in ~/.claude/CLAUDE.md):
 node slingshot/scripts/slingshot.mjs install
-
-# Per project (rule in the project's CLAUDE.md and AGENTS.md):
 node slingshot/scripts/slingshot.mjs install --scope=project --project-dir=<path>
-
-# With automatic ledger injection each session:
 node slingshot/scripts/slingshot.mjs install --hook
 ```
 
-The installer respects everything that already exists: it only replaces
-content between its own markers, backs up `settings.json` before touching
-hooks, and never overwrites a ledger.
+The installer is careful: it only edits the block between its own markers,
+backs up `settings.json` before touching hooks, and never overwrites a lesson
+file.
 
 ## Updating
 
 ```bash
-git pull                                          # pull the new version
-node slingshot/scripts/slingshot.mjs update       # re-copy code + re-inject rule
+git pull                                       # get the new version
+node slingshot/scripts/slingshot.mjs update    # re-copy code + refresh the rule
 ```
 
-`update` replaces the entire codebase (SKILL.md, references, scripts, rule)
-and **never** reads or writes the ledgers — your learnings live outside the
-updatable unit, so an update can never cost you what you've learned. The
-version lives in the `SKILL.md` frontmatter and in the injected block's marker.
+`update` replaces all the code but **never** reads or writes your lessons —
+they live outside the updatable part, so an update can't cost you what you've
+learned.
 
 ```bash
-node slingshot/scripts/slingshot.mjs status       # see which version is where
-node slingshot/scripts/slingshot.mjs uninstall    # removes rule, hook, and skill; keeps ledgers
+node slingshot/scripts/slingshot.mjs status     # what's installed where
+node slingshot/scripts/slingshot.mjs uninstall  # remove rule, hook, and skill; keep lessons
 ```
 
 ## Structure
 
 ```
 slingshot/
-├── SKILL.md                  # Router: commands, gates, moves (version in frontmatter)
+├── SKILL.md                  # The router: commands, gates, and moves (version lives here)
 ├── rules/
 │   └── rule-block.md         # Source of truth for the always-on block
-├── references/               # One protocol per command, loaded on demand
+├── references/               # One playbook per command, loaded on demand
 │   ├── distill.md  route.md  budget.md  arsenal.md
 │   ├── learn.md    recall.md teach.md
 │   └── manage.md
 ├── learnings/
-│   └── seed.md               # Seed for the generic ledger (first install only)
+│   └── seed.md               # Starter lessons (copied in on first install only)
 └── scripts/
     ├── slingshot.mjs         # install | update | status | uninstall
-    └── session-start.mjs     # SessionStart hook: injects ledgers as additionalContext
+    └── session-start.mjs     # SessionStart hook: loads lessons into each session
 ```
 
-## Anti-goals
+## Principles
 
-- Never trade correctness for tokens.
-- No ceremony on trivial tasks.
-- No visible bureaucracy: the moves are applied silently.
+- **Correctness beats savings, always.** A wrong answer is the most expensive
+  output there is.
+- **No ceremony on trivial tasks.** Optimizing a one-line fix costs more than
+  it saves.
+- **Invisible by default.** The moves happen silently; they only surface when
+  you ask about cost or model choice.
 
 ## License
 
-[MIT](LICENSE) — use it, modify it, and redistribute it freely, in personal
-or commercial projects; just keep the copyright notice. Your ledgers are
+[MIT](LICENSE) — use it, change it, and share it freely, in personal or
+commercial projects; just keep the copyright notice. Your lesson files are
 yours: they live outside the code, and no license or update ever touches them.

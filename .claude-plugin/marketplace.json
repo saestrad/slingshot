@@ -11,7 +11,7 @@
     {
       "name": "slingshot",
       "source": "./slingshot",
-      "description": "Token, context, and model-cost optimizer for Claude Code with an always-on economy layer and a persistent learning loop.",
+      "description": "Makes Claude Code do more with fewer tokens: sharpens vague requests into precise specs, runs each task on the cheapest capable model, and learns what works across sessions.",
       "version": "2.4.0",
       "author": {
         "name": "saestrad"
