@@ -64,6 +64,24 @@ inmediato de lo falsificado.
 
 Requiere Node 18+.
 
+**Vía npm (recomendado) — sin clonar nada:**
+
+```bash
+# Global (todos tus proyectos, regla en ~/.claude/CLAUDE.md):
+npx @saestrad/slingshot install
+
+# Por proyecto:
+npx @saestrad/slingshot install --scope=project --project-dir=<ruta>
+
+# Con inyección automática de ledgers en cada sesión:
+npx @saestrad/slingshot install --hook
+
+# Actualizar a la última versión:
+npx @saestrad/slingshot@latest update
+```
+
+**Vía git (si prefieres el checkout):**
+
 ```bash
 git clone https://github.com/saestrad/slingshot.git
 cd slingshot

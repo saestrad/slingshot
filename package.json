@@ -1,0 +1,38 @@
+{
+  "name": "@saestrad/slingshot",
+  "version": "2.4.0",
+  "description": "Token, context, and model-cost optimizer for Claude Code and AGENTS.md-compatible agents — an always-on economy layer plus a persistent learning loop.",
+  "type": "module",
+  "bin": {
+    "slingshot": "slingshot/scripts/slingshot.mjs"
+  },
+  "files": [
+    "slingshot",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "claude-code",
+    "claude",
+    "anthropic",
+    "ai-agents",
+    "token-optimization",
+    "llm",
+    "agent-skills",
+    "context-engineering"
+  ],
+  "author": "saestrad",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saestrad/slingshot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/saestrad/slingshot/issues"
+  },
+  "homepage": "https://github.com/saestrad/slingshot#readme"
+}
