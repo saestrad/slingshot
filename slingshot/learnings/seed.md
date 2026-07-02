@@ -35,3 +35,6 @@ before exceeding. Format: `- [tag] fact — when/why it applies`.
 - [verify] Give verifiers a fresh context — fresh-context verifier subagents outperform self-critique; clean context matters as much as tier.
 - [delegate] In long delegated runs require evidence-grounded status ("cite the tool result per claim") — near-eliminates fabricated progress reports.
 - [spec] The stronger the model, the tighter the boundaries — unscoped frontier models invent tooling and burn budget reaching goals; NON-GOALS saves more up-tier.
+- [delegate] Dynamic workflows (Claude Code) move orchestration into a script — intermediate results live in variables, not the window; route there when agents outgrow one conversation or the orchestration is worth rerunning.
+- [delegate] Save a working workflow as a command (/workflows → s) — planning tokens are paid once, reruns execute free; pilot big runs on a small slice and route cheap stages to cheap models.
+- [model] ultracode keyword = one-task workflow opt-in without touching session effort; /effort ultracode = session-wide xhigh + auto-orchestration — drop to high for routine work.

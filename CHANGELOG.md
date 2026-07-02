@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.4.0 — 2026-07-02
+
+Dynamic workflows como cuarto vehículo de delegación (doc oficial de Claude
+Code, tema del artículo de @ecommartinez que motivó la investigación).
+
+- `route.md`: sección nueva "Beyond subagents: dynamic workflows" — script
+  que orquesta hasta 1,000 agentes con resultados intermedios en variables
+  (la ventana solo recibe la respuesta final); cuándo enrutar ahí; trigger
+  por tarea (`ultracode` en el prompt) vs por sesión (`/effort ultracode`);
+  controles de costo (piloto en slice pequeño, modelos baratos por stage,
+  guardar el workflow como comando amortiza el plan a cero).
+- 3 entradas nuevas en seed + ledger vivo (35 total).
+
 ## 2.3.0 — 2026-07-02
 
 Aprendizajes de la era Fable 5 (guía oficial de prompting de Anthropic,

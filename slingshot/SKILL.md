@@ -12,7 +12,7 @@ description: >-
   "save context", "which model", "make it cheaper", "distill", "spec this",
   "optimiza tokens", "ahorra contexto", "qué modelo", "hazlo más barato",
   "destila esto", "slingshot".
-version: 2.3.0
+version: 2.4.0
 user-invocable: true
 argument-hint: "[distill|route|budget|arsenal · learn|recall|teach · status|install|update|uninstall] [target]"
 allowed-tools:

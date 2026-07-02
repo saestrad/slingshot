@@ -107,6 +107,44 @@ For long delegated runs, that EVIDENCE line matters: requiring each status
 claim to point at a tool result near-eliminates fabricated progress reports
 (Anthropic's own testing, 2026-07).
 
+## Beyond subagents: dynamic workflows (Claude Code)
+
+Above a handful of subagents, Claude Code has a fourth delegation vehicle
+(v2.1.154+, paid plans; on Pro enable it in `/config`): a **dynamic
+workflow** — a JavaScript script Claude writes that orchestrates up to 1,000
+agents per run (16 concurrent). Its economy is structural: **the script
+holds the loop and the intermediate results in variables, so the context
+window holds only the final answer** — the orchestration equivalent of
+"files are durable memory; the window is scratch".
+
+When to route to a workflow instead of subagents:
+
+- The task needs more agents than one conversation can coordinate
+  (codebase-wide audits, 500-file migrations, cross-checked research).
+- The orchestration itself is worth rerunning — a saved workflow
+  (`/workflows` → `s`) becomes a slash command: **the planning tokens are
+  paid once, then every rerun executes the same script for free.**
+
+Two ways to trigger, with very different costs:
+
+- **Per task**: include the keyword `ultracode` in the prompt (or ask for "a
+  workflow" in plain words). One task runs as a workflow; session effort is
+  untouched.
+- **Session-wide**: `/effort ultracode` = `xhigh` effort + automatic
+  orchestration on *every* substantive task. Powerful and expensive — one
+  request can spawn several workflows in a row. Drop back to `/effort high`
+  for routine work.
+
+Cost controls (a workflow uses *more* total tokens than conversation — the
+win is context leanness and repeatability, not raw spend):
+
+- **Pilot on a small slice first** — one directory, not the repo — to gauge
+  spend before committing; `/workflows` shows per-agent token usage live.
+- Every agent uses the session's model unless the script routes a stage
+  elsewhere: **ask for cheaper models on stages that don't need the
+  strongest** — the tier ladder applies per stage.
+- Stopping a run keeps completed agents' results; resume reuses them cached.
+
 Rules of engagement:
 - **One failure → fix the spec.** The spec was ambiguous; tighten it.
 - **Two failures → escalate one tier.** Never loop a failing cheap model;
