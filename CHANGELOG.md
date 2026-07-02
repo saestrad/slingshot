@@ -12,7 +12,7 @@ Verificación de fuentes + números duros del API oficial de Anthropic.
 - `budget.md`: mecánica exacta del prompt cache (prefix match, lecturas
   ~0.1x, escrituras 1.25x, invalidadores silenciosos), `count_tokens` vs
   tiktoken.
-- 6 entradas nuevas en el seed del ledger genérico (27 total).
+- 5 entradas nuevas en el seed del ledger genérico (26 total).
 
 ## 2.1.0 — 2026-07-02
 
