@@ -1,161 +1,159 @@
 # Slingshot 🎯
 
-> Disparar con una resortera; que el resultado sea una explosión intergaláctica.
+> Fire a slingshot; make the result an intergalactic explosion.
 
-Skill de optimización de tokens, contexto y costo de modelos para Claude Code
-y cualquier agente que lea `AGENTS.md`, con ciclo de aprendizaje persistente y
-una capa **siempre activa** instalada como regla en el archivo raíz del agente.
+A token, context, and model-cost optimizer for Claude Code and any agent that
+reads `AGENTS.md`, with a persistent learning loop and an **always-on** layer
+installed as a rule in the agent's root file.
 
-El principio de operación: **gastar tokens caros una sola vez — en
-especificación, enrutamiento y aprendizaje — para que cada token futuro sea
-más barato.** Una skill, nueve comandos, gates no opcionales, instalador
-multi-agente y separación estricta entre código (actualizable) y datos
-(tus aprendizajes, intocables).
+The operating principle: **spend expensive tokens once — on specification,
+routing, and learning — so every future token is cheaper.** One skill, nine
+commands, non-optional gates, a multi-agent installer, and a strict separation
+between code (updatable) and data (your learnings, untouchable).
 
-## Las dos capas
+## The two layers
 
-1. **Siempre activa** — un bloque administrado que el instalador inyecta en
-   `CLAUDE.md` (y `AGENTS.md` si existe) entre marcadores
-   `<!-- SLINGSHOT:BEGIN -->` / `<!-- SLINGSHOT:END -->`. Son ~20 líneas que
-   viajan en **cada request**: reglas de economía + auto-triggers (destilar
-   peticiones vagas, enrutar trabajo delegable, registrar y consumir
-   aprendizajes). Esto se ejecuta sí o sí, sin invocar nada.
-2. **Profunda** — la skill con los protocolos completos, cargada solo cuando
-   un movimiento o comando se activa (progressive disclosure: la capa honda
-   no cuesta nada hasta que se usa).
+1. **Always-on** — a managed block the installer injects into `CLAUDE.md`
+   (and `AGENTS.md` if present) between the
+   `<!-- SLINGSHOT:BEGIN -->` / `<!-- SLINGSHOT:END -->` markers. It's ~20
+   lines that ride along in **every request**: economy rules + auto-triggers
+   (distill vague requests, route delegable work, record and consume
+   learnings). This runs no matter what, without invoking anything.
+2. **Deep** — the skill with the full protocols, loaded only when a move or
+   command actually runs (progressive disclosure: the deep layer costs nothing
+   until it's used).
 
-Opcional y más fuerte todavía: un hook `SessionStart` que inyecta tus dos
-libros de aprendizajes automáticamente al inicio de **cada sesión**
-(`--hook` en el instalador).
+Optional and stronger still: a `SessionStart` hook that injects your two
+learning ledgers automatically at the start of **every session**
+(`--hook` in the installer).
 
-## Comandos
+## Commands
 
-`/slingshot <comando> [target]` — o se disparan solos vía auto-triggers.
+`/slingshot <command> [target]` — or triggered automatically via auto-triggers.
 
-| Comando | Qué hace |
+| Command | What it does |
 |---|---|
-| `distill [petición]` | Intención vaga → Spec Block ejecutable |
-| `route [tarea]` | Modelo mínimo suficiente + prompt de delegación |
-| `budget` | Auditoría de economía de contexto de la sesión |
-| `arsenal` | Recomienda herramientas externas de ahorro verificadas (máx. 2, nunca instala sin confirmación) |
-| `learn` | Extrae aprendizajes de la sesión a los ledgers |
-| `recall [tema]` | Consume los ledgers; muestra entradas por tema |
-| `teach` | Escaneo del repo + 1 entrevista → siembra el ledger del proyecto |
-| `status` | Versión, estado de instalación, stats de ledgers |
-| `install` / `update` / `uninstall` | Ciclo de vida vía script |
+| `distill [request]` | Vague intent → executable Spec Block |
+| `route [task]` | Minimal sufficient model + delegation prompt |
+| `budget` | Audit of the session's context economy |
+| `arsenal` | Recommends vetted external token-saving tools (max 2, never installs without confirmation) |
+| `learn` | Extracts session learnings into the ledgers |
+| `recall [topic]` | Consumes the ledgers; surfaces entries by topic |
+| `teach` | Repo scan + 1 interview → seeds the project ledger |
+| `status` | Version, install state, ledger stats |
+| `install` / `update` / `uninstall` | Lifecycle via the script |
 
-El patrón que hace que un modelo inferior rinda como uno superior:
+The pattern that makes a lower model perform like a higher one:
 
 ```
-modelo fuerte DESTILA → modelo barato EJECUTA → script o modelo fuerte VERIFICA
+strong model DISTILLS → cheap model EXECUTES → script or strong model VERIFIES
 ```
 
-## Los ledgers (datos, nunca los toca un update)
+## The ledgers (data — an update never touches them)
 
-| Ledger | Ruta | Contenido |
+| Ledger | Path | Contents |
 |---|---|---|
-| Genérico | `~/.claude/slingshot/generic.md` | Técnicas válidas en cualquier proyecto (sembrado con 35 aprendizajes curados y verificados contra fuentes primarias) |
-| De proyecto | `.claude/slingshot.md` en cada repo | Quirks de ese repo — commitealo y todo el equipo lo hereda |
+| Generic | `~/.claude/slingshot/generic.md` | Techniques valid in any project (seeded with 35 curated learnings, verified against primary sources) |
+| Project | `.claude/slingshot.md` in each repo | That repo's quirks — commit it and the whole team inherits it |
 
-Formato de una línea por aprendizaje, topes (80/60 líneas), dedupe, y borrado
-inmediato de lo falsificado.
+One line per learning, hard caps (80/60 lines), dedupe, and immediate deletion
+of anything falsified.
 
-## Instalación
+## Installation
 
-Requiere Node 18+.
+Requires Node 18+.
 
-**Vía npm (recomendado) — sin clonar nada:**
+**Via npm (recommended) — no cloning:**
 
 ```bash
-# Global (todos tus proyectos, regla en ~/.claude/CLAUDE.md):
+# Global (all your projects, rule in ~/.claude/CLAUDE.md):
 npx @saestrad/slingshot install
 
-# Por proyecto:
-npx @saestrad/slingshot install --scope=project --project-dir=<ruta>
+# Per project:
+npx @saestrad/slingshot install --scope=project --project-dir=<path>
 
-# Con inyección automática de ledgers en cada sesión:
+# With automatic ledger injection each session:
 npx @saestrad/slingshot install --hook
 
-# Actualizar a la última versión:
+# Update to the latest version:
 npx @saestrad/slingshot@latest update
 ```
 
-**Vía plugin de Claude Code (integración nativa):**
+**Via Claude Code plugin (native integration):**
 
 ```
 /plugin marketplace add saestrad/slingshot
 /plugin install slingshot@saestrad
 ```
 
-Instala la skill como plugin versionado (namespaced `/slingshot:slingshot`).
-Nota: el plugin entrega la **capa profunda** (la skill); para la **capa
-siempre-activa** (regla de economía en `CLAUDE.md` + hook de ledgers) usa el
-instalador de npm o git de abajo, que es quien escribe esos archivos.
+Installs the skill as a versioned plugin (namespaced `/slingshot:slingshot`).
+Note: the plugin delivers the **deep layer** (the skill); for the
+**always-on layer** (economy rule in `CLAUDE.md` + ledger hook) use the npm or
+git installer below, which is what writes those files.
 
-**Vía git (si prefieres el checkout):**
+**Via git (if you prefer a checkout):**
 
 ```bash
 git clone https://github.com/saestrad/slingshot.git
 cd slingshot
 
-# Global (todos tus proyectos, regla en ~/.claude/CLAUDE.md):
+# Global (all your projects, rule in ~/.claude/CLAUDE.md):
 node slingshot/scripts/slingshot.mjs install
 
-# Por proyecto (regla en CLAUDE.md y AGENTS.md del proyecto):
-node slingshot/scripts/slingshot.mjs install --scope=project --project-dir=<ruta>
+# Per project (rule in the project's CLAUDE.md and AGENTS.md):
+node slingshot/scripts/slingshot.mjs install --scope=project --project-dir=<path>
 
-# Con inyección automática de ledgers en cada sesión:
+# With automatic ledger injection each session:
 node slingshot/scripts/slingshot.mjs install --hook
 ```
 
-El instalador respeta todo lo existente: solo reemplaza entre sus marcadores,
-hace backup de `settings.json` antes de tocar hooks, y jamás pisa un ledger.
+The installer respects everything that already exists: it only replaces
+content between its own markers, backs up `settings.json` before touching
+hooks, and never overwrites a ledger.
 
-## Actualización
-
-```bash
-git pull                                          # traer la nueva versión
-node slingshot/scripts/slingshot.mjs update       # re-copia código + re-inyecta regla
-```
-
-`update` reemplaza el código completo (SKILL.md, references, scripts, regla)
-y **nunca** lee ni escribe los ledgers — tus aprendizajes viven fuera de la
-unidad actualizable, así una actualización jamás puede costarte lo aprendido.
-La versión vive en el frontmatter de `SKILL.md` y en el marcador del bloque
-inyectado.
+## Updating
 
 ```bash
-node slingshot/scripts/slingshot.mjs status       # ver qué versión hay dónde
-node slingshot/scripts/slingshot.mjs uninstall    # quita regla, hook y skill; conserva ledgers
+git pull                                          # pull the new version
+node slingshot/scripts/slingshot.mjs update       # re-copy code + re-inject rule
 ```
 
-## Estructura
+`update` replaces the entire codebase (SKILL.md, references, scripts, rule)
+and **never** reads or writes the ledgers — your learnings live outside the
+updatable unit, so an update can never cost you what you've learned. The
+version lives in the `SKILL.md` frontmatter and in the injected block's marker.
+
+```bash
+node slingshot/scripts/slingshot.mjs status       # see which version is where
+node slingshot/scripts/slingshot.mjs uninstall    # removes rule, hook, and skill; keeps ledgers
+```
+
+## Structure
 
 ```
 slingshot/
-├── SKILL.md                  # Router: comandos, gates, movimientos (version en frontmatter)
+├── SKILL.md                  # Router: commands, gates, moves (version in frontmatter)
 ├── rules/
-│   └── rule-block.md         # Fuente de verdad del bloque siempre-activo
-├── references/               # Un protocolo por comando, carga bajo demanda
+│   └── rule-block.md         # Source of truth for the always-on block
+├── references/               # One protocol per command, loaded on demand
 │   ├── distill.md  route.md  budget.md  arsenal.md
 │   ├── learn.md    recall.md teach.md
 │   └── manage.md
 ├── learnings/
-│   └── seed.md               # Semilla del ledger genérico (solo primera instalación)
+│   └── seed.md               # Seed for the generic ledger (first install only)
 └── scripts/
     ├── slingshot.mjs         # install | update | status | uninstall
-    └── session-start.mjs     # Hook SessionStart: inyecta ledgers como additionalContext
+    └── session-start.mjs     # SessionStart hook: injects ledgers as additionalContext
 ```
 
-## Anti-metas
+## Anti-goals
 
-- Nunca sacrificar correctitud por tokens.
-- Cero ceremonia en tareas triviales.
-- Cero burocracia visible: los movimientos se aplican en silencio.
+- Never trade correctness for tokens.
+- No ceremony on trivial tasks.
+- No visible bureaucracy: the moves are applied silently.
 
-## Licencia
+## License
 
-[MIT](LICENSE) — úsala, modifícala y redistribúyela con libertad, en
-proyectos personales o comerciales; solo conserva el aviso de copyright.
-Tus ledgers son tuyos: viven fuera del código y ninguna licencia ni
-actualización los toca.
+[MIT](LICENSE) — use it, modify it, and redistribute it freely, in personal
+or commercial projects; just keep the copyright notice. Your ledgers are
+yours: they live outside the code, and no license or update ever touches them.
