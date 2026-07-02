@@ -6,9 +6,11 @@ Skill de optimización de tokens, contexto y costo de modelos para Claude Code
 y cualquier agente que lea `AGENTS.md`, con ciclo de aprendizaje persistente y
 una capa **siempre activa** instalada como regla en el archivo raíz del agente.
 
-Arquitectura inspirada en [Impeccable](https://impeccable.style/): una skill,
-N comandos, gates no opcionales, instalador multi-agente, y separación
-estricta entre código (actualizable) y datos (tus aprendizajes, intocables).
+El principio de operación: **gastar tokens caros una sola vez — en
+especificación, enrutamiento y aprendizaje — para que cada token futuro sea
+más barato.** Una skill, nueve comandos, gates no opcionales, instalador
+multi-agente y separación estricta entre código (actualizable) y datos
+(tus aprendizajes, intocables).
 
 ## Las dos capas
 
@@ -35,6 +37,7 @@ libros de aprendizajes automáticamente al inicio de **cada sesión**
 | `distill [petición]` | Intención vaga → Spec Block ejecutable |
 | `route [tarea]` | Modelo mínimo suficiente + prompt de delegación |
 | `budget` | Auditoría de economía de contexto de la sesión |
+| `arsenal` | Recomienda herramientas externas de ahorro verificadas (máx. 2, nunca instala sin confirmación) |
 | `learn` | Extrae aprendizajes de la sesión a los ledgers |
 | `recall [tema]` | Consume los ledgers; muestra entradas por tema |
 | `teach` | Escaneo del repo + 1 entrevista → siembra el ledger del proyecto |
@@ -51,7 +54,7 @@ modelo fuerte DESTILA → modelo barato EJECUTA → script o modelo fuerte VERIF
 
 | Ledger | Ruta | Contenido |
 |---|---|---|
-| Genérico | `~/.claude/slingshot/generic.md` | Técnicas válidas en cualquier proyecto (sembrado con 18 aprendizajes curados) |
+| Genérico | `~/.claude/slingshot/generic.md` | Técnicas válidas en cualquier proyecto (sembrado con 35 aprendizajes curados y verificados contra fuentes primarias) |
 | De proyecto | `.claude/slingshot.md` en cada repo | Quirks de ese repo — commitealo y todo el equipo lo hereda |
 
 Formato de una línea por aprendizaje, topes (80/60 líneas), dedupe, y borrado
@@ -62,6 +65,9 @@ inmediato de lo falsificado.
 Requiere Node 18+.
 
 ```bash
+git clone https://github.com/saestrad/slingshot.git
+cd slingshot
+
 # Global (todos tus proyectos, regla en ~/.claude/CLAUDE.md):
 node slingshot/scripts/slingshot.mjs install
 
@@ -84,8 +90,9 @@ node slingshot/scripts/slingshot.mjs update       # re-copia código + re-inyect
 
 `update` reemplaza el código completo (SKILL.md, references, scripts, regla)
 y **nunca** lee ni escribe los ledgers — tus aprendizajes viven fuera de la
-unidad actualizable, igual que PRODUCT.md/DESIGN.md en Impeccable. La versión
-vive en el frontmatter de `SKILL.md` y en el marcador del bloque inyectado.
+unidad actualizable, así una actualización jamás puede costarte lo aprendido.
+La versión vive en el frontmatter de `SKILL.md` y en el marcador del bloque
+inyectado.
 
 ```bash
 node slingshot/scripts/slingshot.mjs status       # ver qué versión hay dónde
@@ -100,7 +107,7 @@ slingshot/
 ├── rules/
 │   └── rule-block.md         # Fuente de verdad del bloque siempre-activo
 ├── references/               # Un protocolo por comando, carga bajo demanda
-│   ├── distill.md  route.md  budget.md
+│   ├── distill.md  route.md  budget.md  arsenal.md
 │   ├── learn.md    recall.md teach.md
 │   └── manage.md
 ├── learnings/
@@ -115,3 +122,10 @@ slingshot/
 - Nunca sacrificar correctitud por tokens.
 - Cero ceremonia en tareas triviales.
 - Cero burocracia visible: los movimientos se aplican en silencio.
+
+## Licencia
+
+[MIT](LICENSE) — úsala, modifícala y redistribúyela con libertad, en
+proyectos personales o comerciales; solo conserva el aviso de copyright.
+Tus ledgers son tuyos: viven fuera del código y ninguna licencia ni
+actualización los toca.

@@ -57,7 +57,7 @@ Verificación de fuentes + números duros del API oficial de Anthropic.
 
 ## 2.0.0 — 2026-07-02
 
-Arquitectura Impeccable-style.
+Arquitectura de dos capas: regla siempre activa + skill profunda bajo demanda.
 
 - **Capa siempre activa**: bloque administrado inyectado en `CLAUDE.md`/`AGENTS.md`
   entre marcadores `SLINGSHOT:BEGIN/END` (reglas de economía + auto-triggers).
