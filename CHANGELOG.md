@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.5.0 — 2026-07-02
+
+The session hook is now **on by default**, so a plain `install` delivers the
+complete experience (always-on rule + automatic lesson loading) with nothing
+to configure.
+
+- `slingshot.mjs`: hook installs by default; opt out with the new `--no-hook`
+  flag (the old `--hook` still works, now redundant).
+- README updated: `install` is the full setup; `--no-hook` is the lighter
+  variant that leaves `settings.json` untouched.
+
 ## 2.4.0 — 2026-07-02
 
 Dynamic workflows as a fourth delegation vehicle (official Claude Code docs).

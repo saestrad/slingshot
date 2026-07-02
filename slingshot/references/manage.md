@@ -15,7 +15,7 @@ copy). The script has zero dependencies (Node 18+).
 |---|---|---|
 | `--scope=global\|project` | Global: `~/.claude`. Project: `.claude/` + root files of the current project | `global` |
 | `--project-dir=<path>` | Project root when `--scope=project` | cwd |
-| `--hook` | Also register the `SessionStart` ledger-injection hook in `settings.json` | off |
+| `--no-hook` | Skip the `SessionStart` ledger-injection hook (leaves `settings.json` untouched) | hook on |
 
 ## What `install` does
 
@@ -29,11 +29,11 @@ copy). The script has zero dependencies (Node 18+).
      exists (covers Codex, Cursor, Copilot, Gemini and other AGENTS.md
      readers). Existing markers are replaced in place; otherwise the block is
      appended. Nothing outside the markers is ever touched.
-4. With `--hook`: adds a `SessionStart` entry to `settings.json` running
-   `scripts/session-start.mjs`, which injects both ledgers as
-   `additionalContext` at the start of every session (startup, resume, clear,
-   compact). Existing settings are preserved; a `.bak` backup is written
-   first.
+4. By default (unless `--no-hook`): adds a `SessionStart` entry to
+   `settings.json` running `scripts/session-start.mjs`, which injects both
+   ledgers as `additionalContext` at the start of every session (startup,
+   resume, clear, compact). Existing settings are preserved; a `.bak` backup
+   is written first. `--no-hook` skips this for a lighter install.
 
 ## What `update` does
 

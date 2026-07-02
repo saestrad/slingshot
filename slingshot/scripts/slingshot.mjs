@@ -17,7 +17,9 @@ const flag = (name, dflt) => {
 };
 
 const scope = flag('scope', 'global');
-const withHook = flag('hook', false) === true;
+// Hook is ON by default — it's what makes the learning loop fully automatic.
+// Opt out with --no-hook for a lighter install that leaves settings.json untouched.
+const withHook = flag('no-hook', false) !== true;
 const projectDir = path.resolve(String(flag('project-dir', process.cwd())));
 const globalRoot = path.join(os.homedir(), '.claude');
 
@@ -174,7 +176,7 @@ function install() {
   }
   for (const f of P.ruleFiles) console.log(`rule   : ${injectRule(f, next)} in ${f}`);
   if (withHook) console.log(`hook   : ${installHook()} in ${P.settings}`);
-  else console.log(`hook   : skipped (pass --hook to auto-inject ledgers each session)`);
+  else console.log(`hook   : skipped via --no-hook (ledgers won't auto-load each session)`);
 }
 
 function status() {

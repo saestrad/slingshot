@@ -88,18 +88,20 @@ Requires Node 18+.
 **Via npm (recommended) — nothing to clone:**
 
 ```bash
-# Everywhere (adds the rule to ~/.claude/CLAUDE.md):
+# Everywhere — full setup, nothing to configure:
 npx @saestrad/slingshot install
 
 # For a single project:
 npx @saestrad/slingshot install --scope=project --project-dir=<path>
 
-# Also load your saved lessons at the start of every session:
-npx @saestrad/slingshot install --hook
-
 # Update later:
 npx @saestrad/slingshot@latest update
 ```
+
+A default `install` gives you the complete experience: the always-on rule
+**and** the session hook that auto-loads your lessons every session. If you'd
+rather not have your `settings.json` touched, add `--no-hook` for a lighter
+install (the always-on rule still works; lessons just won't preload).
 
 **Via Claude Code plugin (native integration):**
 
@@ -121,7 +123,7 @@ cd slingshot
 
 node slingshot/scripts/slingshot.mjs install
 node slingshot/scripts/slingshot.mjs install --scope=project --project-dir=<path>
-node slingshot/scripts/slingshot.mjs install --hook
+node slingshot/scripts/slingshot.mjs install --no-hook   # lighter: skip the session hook
 ```
 
 The installer is careful: it only edits the block between its own markers,
