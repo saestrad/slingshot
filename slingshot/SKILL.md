@@ -12,7 +12,7 @@ description: >-
   "save context", "which model", "make it cheaper", "distill", "spec this",
   "optimiza tokens", "ahorra contexto", "qué modelo", "hazlo más barato",
   "destila esto", "slingshot".
-version: 2.2.0
+version: 2.3.0
 user-invocable: true
 argument-hint: "[distill|route|budget|arsenal · learn|recall|teach · status|install|update|uninstall] [target]"
 allowed-tools:
@@ -85,12 +85,14 @@ the user's words plus the repo. Infer before asking; at most one batched
 question. The Spec Block is the payload: it becomes the prompt for whoever
 executes.
 
-**ROUTE** — capability gap is compensated by specification density. Haiku for
-mechanical pattern-following with exact examples; Sonnet for implementation
-from a full spec; Opus/Fable for ambiguity, architecture, and verification.
-The compound pattern: **strong model distills → cheap model executes → script
-or strong model verifies.** One failure → fix the spec; two → escalate; never
-loop.
+**ROUTE** — capability gap is compensated by specification density, and
+routing is two-dimensional: tier × effort (frontier `low` often beats
+prior-gen `xhigh` — down-effort before down-tier). Haiku for mechanical
+pattern-following with exact examples; Sonnet for implementation from a full
+spec; Opus/Fable for ambiguity, architecture, and verification. The compound
+pattern: **strong model distills → cheap model executes → fresh-context
+script or strong model verifies.** One failure → fix the spec; two →
+escalate; never loop.
 
 **BUDGET** — control what enters the window, what stays, and what always
 loads. Files are durable memory; the window is scratch.

@@ -9,6 +9,7 @@ Apply silently on every task; mention only if the user asks about cost or models
 4. More than ~10 mechanical edits of the same shape → write a script, verify a sample.
 5. Plans, specs, and findings go to files; reference `path:line` instead of pasting code.
 6. Broad exploration goes to a disposable subagent; only the conclusion returns.
+7. Match spec density to the executor: examples and exact steps for weak models; goal, constraints, and DONE WHEN — never micro-steps — for strong ones.
 
 **Auto-triggers:**
 - Vague or multi-step request → run the slingshot skill's DISTILL move (Spec Block) before executing.

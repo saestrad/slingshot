@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.3.0 — 2026-07-02
+
+Aprendizajes de la era Fable 5 (guía oficial de prompting de Anthropic,
+reporte técnico independiente de harness, mediciones de Simon Willison).
+
+- `route.md`: el routing ahora es bidimensional (tier × effort) — frontier
+  `low` suele superar el `xhigh` de la generación previa; down-effort antes
+  que down-tier. Economía de equipos paralelos (en tareas fáciles un equipo
+  de 10 agentes ≈ 0.8x break-even; async > blocking; subagentes long-lived
+  amortizan vía cache). Línea EVIDENCE en el prompt de delegación
+  (anti-fabricación de estados). Verificador con contexto fresco > autocrítica.
+  Frontera de límites: modelos más fuertes necesitan NON-GOALS más estrictos.
+- `distill.md`: densidad de spec inversamente proporcional a la capacidad del
+  ejecutor (micro-pasos degradan a los modelos frontier); el porqué junto al
+  GOAL (intent mejora resultados).
+- `rules/rule-block.md`: regla 7 nueva — densidad de spec según ejecutor.
+- 6 entradas nuevas en seed + ledger vivo (32 total).
+
 ## 2.2.0 — 2026-07-02
 
 Verificación de fuentes + números duros del API oficial de Anthropic.

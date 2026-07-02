@@ -29,3 +29,9 @@ before exceeding. Format: `- [tag] fact — when/why it applies`.
 - [model] output_config.effort is a per-request lever — lower effort means fewer, consolidated tool calls and terser output; low fits mechanical subagents.
 - [budget] Non-urgent bulk work through the Batches API costs 50% of standard price — latency (up to hours) is the only trade.
 - [verify] Count Claude tokens with the count_tokens API, never tiktoken — OpenAI's tokenizer undercounts Claude by ~15-20%, worse on code.
+- [model] Frontier low effort often exceeds prior-gen xhigh — try down-effort before down-tier; measured spread low→max on one task was ~7.5x output tokens.
+- [spec] Over-prescription degrades strong models — micro-step prompts written for weaker tiers reduce frontier output quality; constrain the what, never the how.
+- [delegate] Parallel subagent teams pay off only on hard problems — on easy tasks a 10-agent team is ~0.8x break-even; dispatch async and reuse long-lived subagents (cache reads).
+- [verify] Give verifiers a fresh context — fresh-context verifier subagents outperform self-critique; clean context matters as much as tier.
+- [delegate] In long delegated runs require evidence-grounded status ("cite the tool result per claim") — near-eliminates fabricated progress reports.
+- [spec] The stronger the model, the tighter the boundaries — unscoped frontier models invent tooling and burn budget reaching goals; NON-GOALS saves more up-tier.

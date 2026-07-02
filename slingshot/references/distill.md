@@ -20,7 +20,10 @@ Skip it when the request is already precise or trivially small.
 Fill as much of the Spec Block as the message itself supports:
 
 - **GOAL** — the outcome, stated as a result, not an activity.
-  "Users can reset their password by email", not "work on auth".
+  "Users can reset their password by email", not "work on auth". When the
+  why is known, state it in the same line ("...so support stops handling
+  resets manually") — models that understand intent connect the task to the
+  right context instead of guessing it.
 - **SCOPE** — which files/modules/areas are touched. Everything else is
   untouched by default.
 - **CONSTRAINTS** — versions, conventions, style, performance limits,
@@ -59,6 +62,22 @@ DONE WHEN: ...
 
 Keep it under ~15 lines. If it needs more, the task should be split into
 sequential Spec Blocks.
+
+### 5. Calibrate density to the executor
+
+Spec **density scales inversely with executor capability** (Anthropic docs +
+harness reports, 2026-07). The same block, tuned per tier:
+
+- **Weak executor (Haiku)**: add concrete input→output examples, a rigid
+  output format, and exact steps. Examples beat instructions down-tier.
+- **Strong executor (Opus/Fable)**: give GOAL, CONSTRAINTS, NON-GOALS, and
+  DONE WHEN — and **stop**. Micro-step procedures written for weaker models
+  measurably *degrade* frontier output quality; the model finds a better
+  path than the one you'd prescribe. Constrain the *what*, never the *how*.
+
+This also applies to standing instructions: skills and prompts written for
+prior generations tend to be too prescriptive for frontier models — prune
+them when default behavior is already better.
 
 ## Worked examples
 
