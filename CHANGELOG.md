@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.5.1 — 2026-07-02
+
+Text pass. Rewrote the README and the package descriptions in a plainer,
+more human voice, dropping the usual AI-writing tells. No code changes.
+
 ## 2.5.0 — 2026-07-02
 
 The session hook is now **on by default**, so a plain `install` delivers the
