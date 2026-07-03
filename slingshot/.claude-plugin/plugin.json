@@ -1,6 +1,6 @@
 {
   "name": "slingshot",
-  "description": "Makes Claude Code do more with fewer tokens: it sharpens vague requests into precise specs, runs each task on the cheapest capable model, and learns what works across sessions. Runs automatically once installed.",
+  "description": "Slingshot helps Claude Code get more done for fewer tokens. It sharpens fuzzy requests into clear specs and sends each task to the cheapest model that can handle it, then reuses what worked so the next session starts smarter. Automatic once installed.",
   "version": "2.5.0",
   "author": {
     "name": "saestrad"

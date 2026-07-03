@@ -1,94 +1,95 @@
 # Slingshot 🎯
 
-> Fire a slingshot; get an intergalactic explosion.
+> Fire a slingshot, get an intergalactic explosion.
 
-**Slingshot makes Claude Code do more with fewer tokens — automatically.**
-It sharpens vague requests into precise instructions, runs each task on the
-cheapest model that can actually handle it, and remembers what works across
-sessions. You get top-tier results at a fraction of the cost, without changing
-how you work.
-
-Once installed, it runs on its own. There are no commands to memorize and no
-new habits to build: a small set of economy rules rides along in every request,
-and the full playbook loads only when a task actually needs it.
+Slingshot helps Claude Code get more done while spending fewer tokens. It turns
+a vague request into a clear one before any work starts, sends each task to the
+cheapest model that can actually do it well, and keeps notes on what worked so
+the next session starts smarter. You keep working the way you already do, and
+it handles the rest in the background.
 
 ## Why it saves money
 
-Most token waste isn't long output — it's **rework** (building the wrong thing)
-and **overkill** (using an expensive model for a simple job). Slingshot attacks
-both:
+Two things burn most of the tokens. One is doing the wrong thing and having to
+redo it. The other is using an expensive model for a job a cheaper one could
+have handled. Slingshot goes after both.
 
-- **Sharpen before doing.** A vague request ("make it faster", "clean this up")
-  becomes a precise spec — goal, scope, and a checkable "done when" — *before*
-  any work starts. Less back-and-forth, fewer wrong turns.
-- **Right-size the model.** A well-specified task doesn't need the most
-  expensive model. Slingshot routes each job to the cheapest tier that can do
-  it well — often 5–10× cheaper — and reserves the strong model for the hard
-  20%: judgment, architecture, and reviewing the result.
-- **Learn once, reuse forever.** Every session, it records what worked as
-  one-line lessons and reuses them next time — so it gets cheaper *and* smarter
-  the more you use it.
+Before any work starts, a fuzzy request like "make it faster" or "clean this
+up" gets turned into a short spec: what the goal is, which files are in play,
+and how you'll know it's done. That alone cuts most of the back-and-forth.
 
-The core move:
+Once a task is well defined, it usually doesn't need the strongest model.
+Slingshot sends it to the cheapest tier that can handle it, which is often five
+to ten times cheaper, and saves the strong model for the parts that really need
+judgment, like design decisions, tricky bugs, and checking the result.
+
+Every session it also writes down what worked, one line at a time, and reuses
+those notes later. So the tool gets a little cheaper and a little sharper the
+more you use it.
+
+The basic loop looks like this:
 
 ```
-strong model SHARPENS the task → cheap model DOES it → a script or the strong model CHECKS it
+strong model writes the spec  →  cheap model does the work  →  a script or the strong model checks it
 ```
 
-Reading and checking a result costs far less than generating it, so the
-expensive model's time goes where it matters.
+Reading and checking a result costs far less than producing it, so the
+expensive model spends its time where it counts.
 
-## How it's built: two layers
+## How it's built
 
-1. **Always-on layer** — a small managed block the installer adds to your
-   agent's root file (`CLAUDE.md`, and `AGENTS.md` for other agents). It's ~20
-   lines that travel in **every request**: the economy rules plus the triggers
-   that fire the behavior automatically. Nothing to invoke.
-2. **Deep layer** — the full skill, with the complete playbook for each move.
-   It loads **only when a task needs it**, so it costs nothing the rest of the
-   time.
+There are two layers.
 
-Optional extra: a `SessionStart` hook that loads your saved lessons at the
-start of every session automatically (`--hook` when installing).
+The first one is always on. When you install, a short block of rules goes into
+your agent's root file (`CLAUDE.md`, or `AGENTS.md` for other agents). Those
+rules travel with every request, so the behavior just happens. You don't invoke
+anything.
+
+The second is the full skill, with the complete playbook for each move. It only
+loads when a task actually calls for it, so it costs nothing the rest of the
+time.
+
+By default the installer also adds a small hook that loads your saved notes at
+the start of every session, so they're there from the first message.
 
 ## Commands
 
-You rarely need these — the behavior is automatic. But you can invoke any move
-directly with `/slingshot <command>`:
+You rarely need these, since the behavior runs on its own. But you can call any
+move directly with `/slingshot <command>`:
 
 | Command | What it does |
 |---|---|
-| `distill [request]` | Turns a vague request into a precise, executable spec |
-| `route [task]` | Picks the cheapest model that fits + writes the hand-off prompt |
-| `budget` | Audits the current session for wasted context and fixes it |
-| `arsenal` | Suggests vetted external token-saving tools (max 2, never installs without asking) |
-| `learn` | Saves the session's lessons |
-| `recall [topic]` | Pulls up saved lessons relevant to what you're doing |
-| `teach` | Scans a repo + one quick interview → seeds that project's lessons |
-| `status` | Shows version, install state, and lesson counts |
+| `distill [request]` | Turns a vague request into a clear, executable spec |
+| `route [task]` | Picks the cheapest model that fits and writes the hand-off prompt |
+| `budget` | Checks the current session for wasted context and fixes it |
+| `arsenal` | Suggests vetted external token-saving tools (up to two, never installs without asking) |
+| `learn` | Saves the session's notes |
+| `recall [topic]` | Pulls up saved notes about what you're working on |
+| `teach` | Scans a repo plus one quick interview, then seeds that project's notes |
+| `status` | Shows version, install state, and note counts |
 | `install` / `update` / `uninstall` | Manage the installation |
 
-## Memory that survives updates
+## Your notes survive updates
 
-Slingshot keeps two files of lessons ("ledgers"). Updating the tool **never
-touches them** — your knowledge is safe.
+Slingshot keeps two files of notes (it calls them ledgers). Updating the tool
+never touches them, so nothing you've learned gets lost.
 
 | File | Where | What's in it |
 |---|---|---|
-| Generic | `~/.claude/slingshot/generic.md` | Techniques that help on any project (ships seeded with 35 curated, source-verified lessons) |
-| Project | `.claude/slingshot.md` in each repo | That repo's specific quirks — commit it and your whole team inherits it |
+| Generic | `~/.claude/slingshot/generic.md` | Techniques that help on any project. Ships with 35 curated notes, each checked against a primary source. |
+| Project | `.claude/slingshot.md` in each repo | That repo's own quirks. Commit it and your whole team gets them too. |
 
-One line per lesson, capped in size, deduplicated, and any lesson proven wrong
-is deleted on sight.
+Each note is one line. The files stay small, duplicates get merged, and
+anything that turns out to be wrong gets deleted.
 
 ## Installation
 
 Requires Node 18+.
 
-**Via npm (recommended) — nothing to clone:**
+**Via npm (recommended), nothing to clone:**
 
 ```bash
-# Everywhere — full setup, nothing to configure:
+# Everywhere, full setup with nothing to configure:
 npx @saestrad/slingshot install
 
 # For a single project:
@@ -98,10 +99,10 @@ npx @saestrad/slingshot install --scope=project --project-dir=<path>
 npx @saestrad/slingshot@latest update
 ```
 
-A default `install` gives you the complete experience: the always-on rule
-**and** the session hook that auto-loads your lessons every session. If you'd
-rather not have your `settings.json` touched, add `--no-hook` for a lighter
-install (the always-on rule still works; lessons just won't preload).
+A plain `install` gives you the whole thing: the always-on rule and the session
+hook that loads your notes each session. If you'd rather leave your
+`settings.json` alone, add `--no-hook`. The rule still works; your notes just
+won't preload.
 
 **Via Claude Code plugin (native integration):**
 
@@ -110,12 +111,12 @@ install (the always-on rule still works; lessons just won't preload).
 /plugin install slingshot@saestrad
 ```
 
-This installs the skill as a versioned plugin (`/slingshot:slingshot`). Note:
-the plugin gives you the **deep layer** (the skill itself). For the
-**always-on layer** — the economy rule in `CLAUDE.md` and the lesson hook — use
-the npm or git installer below, since that's what writes those files.
+This installs the skill as a versioned plugin (`/slingshot:slingshot`). One
+thing to know: the plugin gives you the skill itself, but not the always-on
+rule in `CLAUDE.md` or the notes hook. For those, use the npm or git installer,
+since that's what writes those files.
 
-**Via git (if you prefer a checkout):**
+**Via git, if you'd rather have a checkout:**
 
 ```bash
 git clone https://github.com/saestrad/slingshot.git
@@ -123,27 +124,26 @@ cd slingshot
 
 node slingshot/scripts/slingshot.mjs install
 node slingshot/scripts/slingshot.mjs install --scope=project --project-dir=<path>
-node slingshot/scripts/slingshot.mjs install --no-hook   # lighter: skip the session hook
+node slingshot/scripts/slingshot.mjs install --no-hook
 ```
 
-The installer is careful: it only edits the block between its own markers,
-backs up `settings.json` before touching hooks, and never overwrites a lesson
-file.
+The installer is careful with what's already there. It only edits the block
+between its own markers, backs up `settings.json` before touching hooks, and
+never overwrites a notes file.
 
 ## Updating
 
 ```bash
 git pull                                       # get the new version
-node slingshot/scripts/slingshot.mjs update    # re-copy code + refresh the rule
+node slingshot/scripts/slingshot.mjs update    # re-copy code and refresh the rule
 ```
 
-`update` replaces all the code but **never** reads or writes your lessons —
-they live outside the updatable part, so an update can't cost you what you've
-learned.
+`update` replaces all the code but leaves your notes alone. They live outside
+the part that gets updated, so an update can't cost you what you've learned.
 
 ```bash
 node slingshot/scripts/slingshot.mjs status     # what's installed where
-node slingshot/scripts/slingshot.mjs uninstall  # remove rule, hook, and skill; keep lessons
+node slingshot/scripts/slingshot.mjs uninstall  # remove rule, hook, and skill; keep the notes
 ```
 
 ## Structure
@@ -158,23 +158,26 @@ slingshot/
 │   ├── learn.md    recall.md teach.md
 │   └── manage.md
 ├── learnings/
-│   └── seed.md               # Starter lessons (copied in on first install only)
+│   └── seed.md               # Starter notes (copied in on first install only)
 └── scripts/
     ├── slingshot.mjs         # install | update | status | uninstall
-    └── session-start.mjs     # SessionStart hook: loads lessons into each session
+    └── session-start.mjs     # SessionStart hook: loads notes into each session
 ```
 
 ## Principles
 
-- **Correctness beats savings, always.** A wrong answer is the most expensive
-  output there is.
-- **No ceremony on trivial tasks.** Optimizing a one-line fix costs more than
-  it saves.
-- **Invisible by default.** The moves happen silently; they only surface when
-  you ask about cost or model choice.
+Getting the right answer matters more than saving tokens. A wrong answer is the
+most expensive thing you can produce.
+
+Small tasks don't get the treatment. Optimizing a one-line fix costs more than
+it saves.
+
+It stays out of the way. The work happens quietly, and only comes up if you ask
+about cost or which model to use.
 
 ## License
 
-[MIT](LICENSE) — use it, change it, and share it freely, in personal or
-commercial projects; just keep the copyright notice. Your lesson files are
-yours: they live outside the code, and no license or update ever touches them.
+[MIT](LICENSE). Use it, change it, and share it however you like, in personal
+or commercial projects, as long as you keep the copyright notice. Your notes
+are yours: they live outside the code, and no license or update ever touches
+them.
